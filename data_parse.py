@@ -4,7 +4,8 @@ import os.path
 import glob
 import numpy as np
 import scipy.integrate as integrate
-from progress.bar import IncrementalBar
+#from progress.bar import IncrementalBar
+from tqdm import tqdm
 
 
 def E(z) :      # dimensionless Hubble parameter
@@ -39,8 +40,8 @@ def parse_data_macho(RF) :
             float(line.split()[4]), float(line.split()[6]), float(line.split()[5])) for line in metafile])
     
     quasar = {}
-    bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
-    for filename in qlist :
+    #bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
+    for filename in tqdm(qlist) :
         if filename != 'quasar_info' :
             with open(cwd + '/data/' + filename + '.dat') as datafile :
                 qname = str(datafile.readline().rstrip('\n'))
@@ -78,10 +79,10 @@ def parse_data_macho(RF) :
                 quasar[qname]['Mag']        = Mavg
                 quasar[qname]['z']          = z
 
-                bar.next()
+                #bar.next()
         else :
             continue
-    bar.finish()        
+    #bar.finish()        
 
     qlist.remove('quasar_info')
 
@@ -108,8 +109,8 @@ def parse_data_kepler(RF) :
 
     quasar = {}
     bad_qso = []
-    bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
-    for filename in qlist :
+    #bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
+    for filename in tqdm(qlist) :
         if filename != 'quasar_info' :
             with open(cwd + '/data/kepler/lcwerrors_' + filename + '.dat') as datafile :
                 qname = filename
@@ -139,10 +140,10 @@ def parse_data_kepler(RF) :
                     quasar[qname]['fluxerr']    = fluxerr
                     quasar[qname]['z']          = z
     
-                    bar.next()
+                    #bar.next()
         else :
             continue
-    bar.finish()        
+    #bar.finish()        
 
     qlist.remove('quasar_info')
     [qlist.remove(qso) for qso in bad_qso]
@@ -174,8 +175,8 @@ def parse_data_cosmograil(RF) :
     quasar = {}
     bad_qso = []
     sets = []
-    bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
-    for filename in qlist :
+    #bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
+    for filename in tqdm(qlist) :
         if filename != 'quasar_info' :
             with open(cwd + '/data/cosmograil/' + filename + '.dat') as datafile :
                 qname = str(datafile.readline().rstrip('\n'))
@@ -208,10 +209,10 @@ def parse_data_cosmograil(RF) :
                         quasar[qimg]['z']       = z
                         sets.append(qimg)
                         
-                        bar.next()
+                        #bar.next()
         else :
             continue
-    bar.finish()
+    #bar.finish()
 
     [qlist.remove(qso) for qso in bad_qso]
     return sets, quasar
@@ -236,7 +237,7 @@ def parse_data_sdss(RF) :
             for line in metafile])
 
     quasar = {}
-    bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
+    #bar = IncrementalBar('Parsing Data', max=len(qlist)-1)
     for filename in qlist :
         if filename != 'DB_QSO_S82' :
             with open(cwd + '/data/QSO_S82/' + filename) as datafile :
@@ -268,10 +269,10 @@ def parse_data_sdss(RF) :
                 quasar[qname]['z']          = z
                 quasar[qname]['Mbh']        = Mass
 
-                bar.next()
+                #bar.next()
         else :
             continue
-    bar.finish()
+    #bar.finish()
                         
     qlist.remove('DB_QSO_S82')
 
