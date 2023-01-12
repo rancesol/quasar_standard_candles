@@ -4,7 +4,6 @@ import os.path
 import glob
 import numpy as np
 import scipy.integrate as integrate
-from find_straights_v2 import find_straights
 from progress.bar import IncrementalBar
 
 
